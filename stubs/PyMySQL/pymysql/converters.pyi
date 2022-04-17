@@ -2,8 +2,12 @@ import datetime
 import time
 from collections.abc import Callable, Mapping, Sequence
 from decimal import Decimal
+from re import Pattern
 from typing import Any, TypeVar
 from typing_extensions import TypeAlias
+
+from .constants import FIELD_TYPE as FIELD_TYPE
+from .err import ProgrammingError as ProgrammingError
 
 _EscaperMapping: TypeAlias = Mapping[type[object], Callable[..., str]] | None
 _T = TypeVar("_T")
@@ -26,8 +30,17 @@ def escape_datetime(obj: datetime.datetime, mapping: _EscaperMapping = ...) -> s
 def escape_date(obj: datetime.date, mapping: _EscaperMapping = ...) -> str: ...
 def escape_struct_time(obj: time.struct_time, mapping: _EscaperMapping = ...) -> str: ...
 def Decimal2Literal(o: Decimal, d: object) -> str: ...
+
+DATETIME_RE: Pattern
+
 def convert_datetime(obj: str | bytes) -> datetime.datetime | str: ...
+
+TIMEDELTA_RE: Pattern
+
 def convert_timedelta(obj: str | bytes) -> datetime.timedelta | str: ...
+
+TIME_RE: Pattern
+
 def convert_time(obj: str | bytes) -> datetime.time | str: ...
 def convert_date(obj: str | bytes) -> datetime.date | str: ...
 def through(x: _T) -> _T: ...
